@@ -43,5 +43,18 @@ if (!context.getProgramParameter(program, context.LINK_STATUS)) {
 }
 
 // Step 3: Create buffers
+let buffer = context.createBuffer();
+context.bindBuffer(context.ARRAY_BUFFER, buffer);
+context.bufferData(context.ARRAY_BUFFER, new Float32Array(triangleCoords),
+    context.STATIC_DRAW);
+context.bindBuffer(context.ARRAY_BUFFER, null);
+
 // Step 4: Link GPU variable to CPU and sending data 
+context.useProgram(program);
+let position = context.getAttribLocation(program, 'position');
+context.bindBuffer(context.ARRAY_BUFFER, buffer);
+context.enableVertexAttribArray(position);
+context.vertexAttribPointer(position, 2, context.FLOAT, context.FALSE, 0, 0);
+
 // Step 5: Render triangle
+context.drawArrays(context.TRIANGLES, 0, 3);
