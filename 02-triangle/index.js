@@ -1,3 +1,4 @@
+import * as util from '../util.js';
 let canvas = document.getElementById('canvas');
 let context = canvas.getContext('webgl2');
 context.clearColor(0.1, 0.2, 0.3, 1.0);
@@ -22,25 +23,7 @@ void main() {
 `;
 
 // Step 2: Create program from shaders
-let vs = context.createShader(context.VERTEX_SHADER);
-context.shaderSource(vs, vertexShader);
-context.compileShader(vs);
-if (!context.getShaderParameter(vs, context.COMPILE_STATUS)) {
-    throw new Error(context.getShaderInfoLog(vs));
-}
-let fs = context.createShader(context.FRAGMENT_SHADER);
-context.shaderSource(fs, fragmentShader);
-context.compileShader(fs);
-if (!context.getShaderParameter(fs, context.COMPILE_STATUS)) {
-    throw new Error(context.getShaderInfoLog(fs));
-}
-let program = context.createProgram();
-context.attachShader(program, vs);
-context.attachShader(program, fs);
-context.linkProgram(program);
-if (!context.getProgramParameter(program, context.LINK_STATUS)) {
-    throw new Error(context.getProgramInfoLog(program));
-}
+let program = util.getProgram(context, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
 let buffer = context.createBuffer();
