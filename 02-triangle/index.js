@@ -34,6 +34,13 @@ context.compileShader(fs);
 if (!context.getShaderParameter(fs, context.COMPILE_STATUS)) {
     throw new Error(context.getShaderInfoLog(fs));
 }
+let program = context.createProgram();
+context.attachShader(program, vs);
+context.attachShader(program, fs);
+context.linkProgram(program);
+if (!context.getProgramParameter(program, context.LINK_STATUS)) {
+    throw new Error(context.getProgramInfoLog(program));
+}
 
 // Step 3: Create buffers
 // Step 4: Link GPU variable to CPU and sending data 
