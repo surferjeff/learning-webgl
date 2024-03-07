@@ -1,10 +1,10 @@
 import * as util from '../util.js';
 let canvas = document.getElementById('canvas');
-let context = canvas.getContext('webgl2');
-context.clearColor(0.1, 0.2, 0.3, 1.0);
-context.clear(context.COLOR_BUFFER_BIT|context.DEPTH_BUFFER_BIT);
+let gl = canvas.getContext('webgl2');
+gl.clearColor(0.1, 0.2, 0.3, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
-let linesCoords = [-0.6, 0.6, 0.6, 0.7,
+let vertices = [-0.6, 0.6, 0.6, 0.7,
   -0.6, -0.6, 0.6, -0.5];
 
 // Step 1: Write shaders
@@ -24,16 +24,16 @@ void main() {
 `;
 
 // Step 2: Create program from shaders
-let program = util.getProgram(context, vertexShader, fragmentShader);
+let program = util.getProgram(gl, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
-let buffer = util.createAndBindBuffer(context, context.ARRAY_BUFFER,
-    new Float32Array(linesCoords), context.STATIC_DRAW);
+let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
+    new Float32Array(vertices), gl.STATIC_DRAW);
 
 // Step 4: Link GPU variable to CPU and sending data 
-context.bindBuffer(context.ARRAY_BUFFER, buffer)
-const position = util.linkVariable(context, program, 'position');
-context.vertexAttribPointer(position, 2, context.FLOAT, context.FALSE, 0, 0);
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+const position = util.linkVariable(gl, program, 'position');
+gl.vertexAttribPointer(position, 2, gl.FLOAT, gl.FALSE, 0, 0);
 
 // Step 5: Render triangle
-context.drawArrays(context.LINES, 0, linesCoords.length / 2);
+gl.drawArrays(gl.LINES, 0, vertices.length / 2);
