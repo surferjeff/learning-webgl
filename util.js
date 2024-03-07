@@ -70,7 +70,6 @@ export function createAndBindBuffer(gl, bufferKind, data, usage) {
  */
 export function linkVariable(gl, program, gpuVariable) {
   const position = gl.getAttribLocation(program, gpuVariable)
-  gl.useProgram(program)
   gl.enableVertexAttribArray(gpuVariable)
   return position
 }
