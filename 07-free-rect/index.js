@@ -24,8 +24,9 @@ void main() {
 let fragmentShader = `#version 300 es
 precision mediump float;
 out vec4 color;
+uniform vec4 inColor;
 void main() {
-  color = vec4(0.0, 1.0, 0.0, 1.0);
+  color = inColor;
 }
 `;
 
@@ -54,6 +55,10 @@ function updateRect(startX, startY, endX, endY) {
   gl.uniform1f(canvasWidth, canvas.width);
   let canvasHeight = gl.getUniformLocation(program, 'canvasHeight');
   gl.uniform1f(canvasHeight, canvas.height);
+  let inColor = gl.getUniformLocation(program, 'inColor');
+  let inColorValue = [startX / canvas.width, startY / canvas.height,
+    endX / canvas.width, endY / canvas.height];
+  gl.uniform4fv(inColor, inColorValue);
   let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
       new Float32Array(triangles), gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
