@@ -20,6 +20,7 @@ void main() {
 let fragmentShader = `#version 300 es
 precision mediump float;
 out vec4 color;
+uniform 
 void main() {
   color = vec4(0.0, gl_FragCoord.x / 100.0, 0.0, 1.0);
 }
@@ -34,6 +35,13 @@ for (let i = 0; i < 100; i++) {
   indices[i] = i;
 }
 let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER, indices,
+  gl.STATIC_DRAW);
+
+let a1 = new Float32Array(100);
+for (let i = 0; i < 100; i++) {
+  a1[i] = 100;
+}
+let a1buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER, a1,
   gl.STATIC_DRAW);
 
 // Step 4: Link GPU variable to CPU and sending data
