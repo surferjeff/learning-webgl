@@ -73,3 +73,38 @@ export function linkVariable(gl, program, gpuVariable) {
   gl.enableVertexAttribArray(gpuVariable)
   return position
 }
+
+/**
+ * Returns a list of coordidates for triangle fragments for a rectangle.
+ * 
+ * @param {number} startX 
+ * @param {number} startY 
+ * @param {number} endX 
+ * @param {number} endY 
+ * @returns {Array<number>}
+ */
+export function triangleCoordsFromRect(startX, startY, endX, endY) {
+  return [
+    startX, startY, endX, endY, startX, endY,
+    startX, startY, endX, endY, endX, startY
+  ]
+}
+
+/**
+ * 
+ * @param {WebGL2RenderingContext} gl 
+ * @param {HTMLImageElement} image 
+ * @returns {WebGLTexture}
+ */
+export function createAndBindTexture(gl, image) {
+  let texture = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  return texture;
+}
