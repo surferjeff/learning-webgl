@@ -26,7 +26,7 @@ export function getProgram(gl, vsSource, fsSource) {
 
 /**
  * @param {WebGL2RenderingContext} gl 
- * @param {gl.VERTEX_SHADER|gl.FRAGMENT_SHADER} kind 
+ * @param {number} kind 
  * @param {string} source 
  * @returns {WebGLShader}
  */
@@ -43,4 +43,34 @@ function compileShader(gl, kind, source) {
   }
 
   return shader
+}
+
+/**
+ * @param {WebGL2RenderingContext} gl 
+ * @param {number} bufferKind 
+ * @param {ArrayBufferView} data 
+ * @param {number} usage 
+ * @returns {WebGLBuffer}
+ */
+export function createAndBindBuffer(gl, bufferKind, data, usage) {
+  const buffer = gl.createBuffer()
+  gl.bindBuffer(bufferKind, buffer)
+  gl.bufferData(bufferKind, data, usage)
+  gl.bindBuffer(bufferKind, null)
+  return buffer
+}
+
+
+/**
+ * 
+ * @param {WebGL2RenderingContext} gl 
+ * @param {WebGLProgram} program 
+ * @param {string} gpuVariable 
+ * @returns {number}
+ */
+export function linkVariable(gl, program, gpuVariable) {
+  const position = gl.getAttribLocation(program, gpuVariable)
+  gl.useProgram(program)
+  gl.enableVertexAttribArray(gpuVariable)
+  return position
 }

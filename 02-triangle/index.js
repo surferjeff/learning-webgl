@@ -26,17 +26,12 @@ void main() {
 let program = util.getProgram(context, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
-let buffer = context.createBuffer();
-context.bindBuffer(context.ARRAY_BUFFER, buffer);
-context.bufferData(context.ARRAY_BUFFER, new Float32Array(triangleCoords),
-    context.STATIC_DRAW);
-context.bindBuffer(context.ARRAY_BUFFER, null);
+let buffer = util.createAndBindBuffer(context, context.ARRAY_BUFFER,
+    new Float32Array(triangleCoords), context.STATIC_DRAW);
 
 // Step 4: Link GPU variable to CPU and sending data 
-context.useProgram(program);
-let position = context.getAttribLocation(program, 'position');
-context.bindBuffer(context.ARRAY_BUFFER, buffer);
-context.enableVertexAttribArray(position);
+context.bindBuffer(context.ARRAY_BUFFER, buffer)
+const position = util.linkVariable(context, program, 'position');
 context.vertexAttribPointer(position, 2, context.FLOAT, context.FALSE, 0, 0);
 
 // Step 5: Render triangle
