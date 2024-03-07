@@ -35,4 +35,4 @@ const position = util.linkVariable(context, program, 'position');
 context.vertexAttribPointer(position, 2, context.FLOAT, context.FALSE, 0, 0);
 
 // Step 5: Render triangle
-context.drawArrays(context.TRIANGLES, 0, 3);
+context.drawArrays(context.TRIANGLES, 0, triangleCoords.length / 2);
