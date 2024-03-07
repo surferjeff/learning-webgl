@@ -4,7 +4,8 @@ let context = canvas.getContext('webgl2');
 context.clearColor(0.1, 0.2, 0.3, 1.0);
 context.clear(context.COLOR_BUFFER_BIT|context.DEPTH_BUFFER_BIT);
 
-let linesCoords = [-0.6, 0.6, 0.6, 0.7];
+let linesCoords = [-0.6, 0.6, 0.6, 0.7,
+  -0.6, -0.6, 0.6, -0.5];
 
 // Step 1: Write shaders
 let vertexShader = `#version 300 es
