@@ -17,33 +17,22 @@ uniform sampler2D srcTex, plusTex;
 uniform vec2 srcDimensions;
 out vec4 color;
  
-struct U16 {
-    float high;
-    float low;
-};
-
 const float carry = 1.0 / 256.0;
 
-U16 add16(U16 a, U16 b) {
-    U16 result;
-    result.high = a.high + b.high;
-    result.low = a.low + b.low;
-    if (result.low > 1.0) {
-        result.high += carry;
-        result.low -= 1.0;
+vec2 add16(vec2 a, vec2 b) {
+    vec2 result = a + b;
+    if (result.y > 1.0) {
+        result.x += carry;
+        result.y -= 1.0;
     }
     return result;
 }
-
 
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
   vec4 srcVec = texture(srcTex, texcoord);
   vec4 plusVec = texture(plusTex, texcoord);
-  U16 a = U16(srcVec.b, srcVec.a);
-  U16 b = U16(plusVec.b, plusVec.a);
-  U16 result = add16(a, b);
-  color = vec4(srcVec.r + plusVec.r, srcVec.g + plusVec.g, result.high, result.low);
+  color = vec4(add16(srcVec.rg, plusVec.rg), add16(srcVec.ba, plusVec.ba));
 }
 
 `;
