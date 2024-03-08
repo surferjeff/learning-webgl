@@ -11,7 +11,7 @@ void main() {
 `;
  
 const fs = `#version 300 es
-precision highp float;
+precision mediump float;
  
 uniform sampler2D srcTex, plusTex;
 uniform vec2 srcDimensions;
@@ -79,12 +79,12 @@ gl.vertexAttribPointer(
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
-const texPrimes = util.linearDataTextureFromI16(gl, [
-        1, 2, 3, 5, 7, 11
-]);
+const texPrimes = util.linearDataTextureFromI16(gl, new Int16Array([
+        1, 2, 3, 5, 7, 2011
+]));
  
 const texHundreds = util.linearDataTextureFromI16(gl, [
-        100, 200, 300, 400, 500, 600,
+        100, 200, 300, 400, 500, 3000,
 ]);
     
 
