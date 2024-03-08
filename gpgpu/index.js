@@ -15,11 +15,11 @@ precision highp float;
  
 uniform sampler2D srcTex;
 uniform vec2 srcDimensions;
-out vec4 color;
+out float color;
  
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
-  vec4 value = texture(srcTex, texcoord);
+  float value = texture(srcTex, texcoord).x;
   color = value * 2.0;
 }
 `;
@@ -61,10 +61,14 @@ gl.vertexAttribPointer(
     0,         // stride (0 = auto)
     0,         // offset
 );
- 
+     
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
+
+const redTex = util.createDataTexture(gl, srcWidth, srcHeight,
+    new Float32Array([1, 2, 3, 5, 7, 11]));
+
 const tex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(
@@ -96,10 +100,10 @@ gl.uniform2f(srcDimensionsLoc, srcWidth, srcHeight);
 gl.drawArrays(gl.TRIANGLES, 0, 6);  // draw 2 triangles (6 vertices)
  
 // get the result
-const results = new Uint8Array(dstWidth * dstHeight * 4);
-gl.readPixels(0, 0, dstWidth, dstHeight, gl.RGBA, gl.UNSIGNED_BYTE, results);
+const results = new Float32Array(dstWidth * dstHeight);
+gl.readPixels(0, 0, dstWidth, dstHeight, gl.R32F, gl.FLOAT, results);
  
 // print the results
-for (let i = 0; i < 4 * dstWidth * dstHeight; i += 4) {
-  console.log(...results.slice(i, i + 4));
+for (let i = 0; i <dstWidth * dstHeight; i += 1) {
+  console.log(results[i]);
 }
