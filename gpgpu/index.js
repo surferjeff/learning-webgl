@@ -65,17 +65,7 @@ gl.vertexAttribPointer(
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
-const tex = gl.createTexture();
-gl.bindTexture(gl.TEXTURE_2D, tex);
-gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,                // mip level
-    gl.RGBA,     // internal format
-    srcWidth,
-    srcHeight,
-    0,                // border
-    gl.RGBA,     // format
-    gl.UNSIGNED_BYTE, // type
+util.createDataTextureRGBA(gl, srcWidth, srcHeight,
     new Uint8Array([
         1, 2, 3, 5,
         7, 11, 13, 17,
@@ -84,10 +74,6 @@ gl.texImage2D(
         53, 59, 61, 67,
         71, 73, 79, 83,
     ]));
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
  
 gl.useProgram(program);
 gl.uniform1i(srcTexLoc, 0);  // tell the shader the src texture is on texture unit 0
