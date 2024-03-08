@@ -17,6 +17,9 @@ out vec2 textureCoords;
 void main() {
   gl_Position = vec4(position, 0.0, 1.0);
   textureCoords = texCoords;
+  // Commenting the line above and uncommenting the line below
+  // shows the image upside down, in the top, left quadrant.
+  // textureCoords = position;
 }
 `;
 let fragmentShader = `#version 300 es
@@ -35,8 +38,6 @@ let program = util.getProgram(gl, vertexShader, fragmentShader);
 // Step 3: Create buffers
 let vertices = util.triangleCoordsFromRect(-1, -1, 1, 1);
 let texCoords = util.triangleCoordsFromRect(0, 0, 1, 1);
-console.log('vertices:', vertices);
-console.log('texCoords:', texCoords);
 
 let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
     new Float32Array(vertices), gl.STATIC_DRAW);
