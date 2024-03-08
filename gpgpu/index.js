@@ -1,23 +1,26 @@
 // Copied from https://webglfundamentals.org/webgl/lessons/webgl-gpgpu.html
 import * as util from "../util.js";
 
-const vs = `
-attribute vec4 position;
+const vs = `#version 300 es
+
+in vec4 position;
+
 void main() {
   gl_Position = position;
 }
 `;
  
-const fs = `
+const fs = `#version 300 es
 precision highp float;
  
 uniform sampler2D srcTex;
 uniform vec2 srcDimensions;
+out vec4 color;
  
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
-  vec4 value = texture2D(srcTex, texcoord);
-  gl_FragColor = value * 2.0;
+  vec4 value = texture(srcTex, texcoord);
+  color = value * 2.0;
 }
 `;
  
@@ -28,7 +31,7 @@ const canvas = document.createElement('canvas');
 canvas.width = dstWidth;
 canvas.height = dstHeight;
  
-const gl = canvas.getContext('webgl');
+const gl = canvas.getContext('webgl2');
  
 const program =  util.getProgram(gl, vs, fs);
 const positionLoc = gl.getAttribLocation(program, 'position');
