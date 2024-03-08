@@ -16,10 +16,7 @@ in vec2 texCoords;
 out vec2 textureCoords;
 void main() {
   gl_Position = vec4(position, 0.0, 1.0);
-  textureCoords = texCoords;
-  // Commenting the line above and uncommenting the line below
-  // shows the image upside down, in the top, left quadrant.
-  // textureCoords = position;
+  textureCoords = position;
 }
 `;
 let fragmentShader = `#version 300 es
