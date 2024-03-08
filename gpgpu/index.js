@@ -77,7 +77,7 @@ gl.texImage2D(
     gl.UNSIGNED_BYTE, // type
     new Uint8Array([
       1, 2, 3,
-      4, 5, 6,
+      5, 7, 11,
     ]));
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
