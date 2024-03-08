@@ -37,8 +37,8 @@ let program = util.getProgram(gl, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
 let vertices = util.triangleCoordsFromRect(-1, -1, 1, 1);
-// Changing these numbers has no effect!  Something is wrong here.
-let texCoords = util.triangleCoordsFromRect(0, 0, 0.5, 0.5);
+// Changing the numbers in texCoords has no effect!  Something is wrong here.
+let texCoords = util.triangleCoordsFromRect(0, 0, 1, 1);
 
 let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
     new Float32Array(vertices), gl.STATIC_DRAW);
@@ -58,6 +58,8 @@ image.onload = function() {
 
   const texCoords = util.linkBuffer(gl, program, 'texCoords', texBuffer);
   gl.vertexAttribPointer(texCoords, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+  console.log({position, texCoords}); 
 
   gl.bindTexture(gl.TEXTURE_2D, texture);
   // Step 5: Render triangle
