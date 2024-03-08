@@ -80,11 +80,11 @@ gl.vertexAttribPointer(
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
-const texPrimes = util.linearDataTextureFromI16(gl, new Int16Array([
+const texPrimes = util.linearDataTextureFromU16(gl, [
         1, 2, 3, 5, 7, 2011
-]));
+]);
  
-const texHundreds = util.linearDataTextureFromI16(gl, [
+const texHundreds = util.linearDataTextureFromU16(gl, [
         100, 200, 300, 400, 500, 3000,
 ]);
     
@@ -105,5 +105,5 @@ gl.drawArrays(gl.TRIANGLES, 0, 6);  // draw 2 triangles (6 vertices)
 // get the result
 const results = new Uint8Array(dstWidth * dstHeight * 4);
 gl.readPixels(0, 0, dstWidth, dstHeight, gl.RGBA, gl.UNSIGNED_BYTE, results);
-const shorts = util.rgbaPixelsToI16(results);
+const shorts = util.rgbaPixelsToU16(results);
 console.log(...shorts);

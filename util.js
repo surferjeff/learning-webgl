@@ -137,10 +137,10 @@ export function createDataTextureRGBA(gl, width, height, data) {
  * @param {WebGL2RenderingContext} gl 
  * @param {number} width 
  * @param {number} height 
- * @param {Int16Array} data 
+ * @param {Uint16Array} data 
  * @returns {WebGLTexture}
  */
-export function linearDataTextureFromI16(gl, data) {
+export function linearDataTextureFromU16(gl, data) {
   const data_length = data.length % 2 ? data.length + 1 : data.length;
   const bytes = new Uint8Array(data_length * 2);
   for (let i = 0, j = 0; i < data.length; i++, j += 2) {
@@ -154,10 +154,10 @@ export function linearDataTextureFromI16(gl, data) {
 /**
  * 
  * @param {Uint8Array} bytes 
- * @returns Int16Array
+ * @returns Uint16Array
  */
-export function rgbaPixelsToI16(bytes) {
-  const shorts = new Int16Array(bytes.length / 2);
+export function rgbaPixelsToU16(bytes) {
+  const shorts = new Uint16Array(bytes.length / 2);
   for (let i = 0, j = 0; i < bytes.length; i += 2, j++) {
     shorts[j] = ((bytes[i] << 8) | bytes[i + 1]);
   }
