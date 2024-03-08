@@ -18,12 +18,13 @@ uniform vec2 srcDimensions;
 out vec4 color;
  
 const float carry = 1.0 / 256.0;
+const float uncarry = 1.0 + carry;
 
 vec2 add16(vec2 a, vec2 b) {
     vec2 result = a + b;
     if (result.y > 1.0) {
         result.x += carry;
-        result.y -= 1.0;
+        result.y -= uncarry;
     }
     return result;
 }
