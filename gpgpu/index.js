@@ -24,7 +24,6 @@ void main() {
 const dstWidth = 3;
 const dstHeight = 2;
  
-// make a 3x2 canvas for 6 results
 const canvas = document.createElement('canvas');
 canvas.width = dstWidth;
 canvas.height = dstHeight;
@@ -65,19 +64,22 @@ const srcWidth = 3;
 const srcHeight = 2;
 const tex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
-gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1); // see https://webglfundamentals.org/webgl/lessons/webgl-data-textures.html
 gl.texImage2D(
     gl.TEXTURE_2D,
     0,                // mip level
-    gl.LUMINANCE,     // internal format
+    gl.RGBA,     // internal format
     srcWidth,
     srcHeight,
     0,                // border
-    gl.LUMINANCE,     // format
+    gl.RGBA,     // format
     gl.UNSIGNED_BYTE, // type
     new Uint8Array([
-      1, 2, 3,
-      5, 7, 11,
+        1, 2, 3, 5,
+        7, 11, 13, 17,
+        19, 23, 29, 31,
+        37, 41, 43, 47,
+        53, 59, 61, 67,
+        71, 73, 79, 83,
     ]));
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -95,6 +97,6 @@ const results = new Uint8Array(dstWidth * dstHeight * 4);
 gl.readPixels(0, 0, dstWidth, dstHeight, gl.RGBA, gl.UNSIGNED_BYTE, results);
  
 // print the results
-for (let i = 0; i < dstWidth * dstHeight; ++i) {
-  console.log(results[i * 4]);
+for (let i = 0; i < 4 * dstWidth * dstHeight; i += 4) {
+  console.log(...results.slice(i, i + 4));
 }
