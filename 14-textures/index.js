@@ -5,7 +5,7 @@ canvas.width = window.innerWidth - 10;
 canvas.height = window.innerHeight - 10;
 let gl = canvas.getContext('webgl2');
 
-gl.clearColor(0.1, 0.2, 0.3, 1.0);
+gl.clearColor(0.9, 0.9, 0.9, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
 // Step 1: Write shaders
@@ -37,7 +37,8 @@ let program = util.getProgram(gl, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
 let vertices = util.triangleCoordsFromRect(-1, -1, 1, 1);
-let texCoords = util.triangleCoordsFromRect(0, 0, 1, 1);
+// Changing these numbers has no effect!  Something is wrong here.
+let texCoords = util.triangleCoordsFromRect(0, 0, 0.5, 0.5);
 
 let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
     new Float32Array(vertices), gl.STATIC_DRAW);
