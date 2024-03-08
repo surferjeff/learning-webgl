@@ -66,12 +66,14 @@ export function createAndBindBuffer(gl, bufferKind, data, usage) {
  * @param {WebGL2RenderingContext} gl 
  * @param {WebGLProgram} program 
  * @param {string} gpuVariable 
+ * @param {WebGLBuffer} buffer
  * @returns {number}
  */
-export function linkVariable(gl, program, gpuVariable) {
-  const position = gl.getAttribLocation(program, gpuVariable)
+export function linkVariable(gl, program, gpuVariable, buffer) {
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+  const v = gl.getAttribLocation(program, gpuVariable)
   gl.enableVertexAttribArray(gpuVariable)
-  return position
+  return v
 }
 
 /**
@@ -98,7 +100,6 @@ export function triangleCoordsFromRect(startX, startY, endX, endY) {
  */
 export function createAndBindTexture(gl, image) {
   let texture = gl.createTexture();
-  gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);

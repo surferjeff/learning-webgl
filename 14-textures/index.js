@@ -48,12 +48,14 @@ image.onload = function() {
 
   // Step 4: Link GPU variable to CPU and sending data 
   gl.useProgram(program);
-  const position = util.linkVariable(gl, program, 'position');
-  gl.vertexAttribPointer(position, 2, gl.FLOAT, gl.FALSE, 0, 0);
-  const texCoords = util.linkVariable(gl, program, 'texCoords');
-  gl.vertexAttribPointer(texCoords, 2, gl.FLOAT, gl.FALSE, 0, 0);
-  gl.bindTexture(gl.TEXTURE_2D, texture);
 
+  const position = util.linkVariable(gl, program, 'position', buffer);
+  gl.vertexAttribPointer(position, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+  const texCoords = util.linkVariable(gl, program, 'texCoords', texBuffer);
+  gl.vertexAttribPointer(texCoords, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
   // Step 5: Render triangle
   gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
 }
