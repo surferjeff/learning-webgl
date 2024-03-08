@@ -104,8 +104,5 @@ gl.drawArrays(gl.TRIANGLES, 0, 6);  // draw 2 triangles (6 vertices)
 // get the result
 const results = new Uint8Array(dstWidth * dstHeight * 4);
 gl.readPixels(0, 0, dstWidth, dstHeight, gl.RGBA, gl.UNSIGNED_BYTE, results);
- 
-// print the results
-for (let i = 0; i < 4 * dstWidth * dstHeight; i += 4) {
-  console.log(...results.slice(i, i + 4));
-}
+const shorts = util.rgbaPixelsToI16(results);
+console.log(...shorts);
