@@ -19,7 +19,16 @@ out vec4 color;
  
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
-  color = texture(srcTex, texcoord) + texture(plusTex, texcoord);
+  vec4 srcVec = texture(srcTex, texcoord);
+  vec4 plusVec = texture(plusTex, texcoord);
+  // Treat the red channel as the low byte and the green channel as the high byte
+  // of a 16-bit little-endian integer.
+  float a = srcVec.r + 256.0 * srcVec.g;
+  float b = plusVec.r + 256.0 * plusVec.g;
+  float sum = a + b;
+  float r = mod(sum, 256.0);
+  float g = floor(sum / 256.0);
+  color = vec4(r, g, srcVec.b + plusVec.b, srcVec.a + plusVec.a);
 }
 `;
  
