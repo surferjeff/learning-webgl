@@ -131,3 +131,35 @@ export function createDataTextureRGBA(gl, width, height, data) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   return texture;
 }
+
+/**
+ * 
+ * @param {WebGL2RenderingContext} gl 
+ * @param {number} width 
+ * @param {number} height 
+ * @param {Int16Array} data 
+ * @returns {WebGLTexture}
+ */
+export function linearDataTextureFromI16(gl, data) {
+  const data_length = data.length % 2 ? data.length + 1 : data.length;
+  const bytes = new Uint8Array(data_length * 2);
+  for (let i = 0, j = 0; i < data.length; i++, j += 2) {
+    const n = data[i]; //  + 32768;  // From signed to unsigned.
+    bytes[j] = (n >> 8) & 0xFF;
+    bytes[j + 1] = n & 0xFF;
+  }
+  return createDataTextureRGBA(gl, bytes.length / 4, 1, bytes);
+}
+
+/**
+ * 
+ * @param {Uint8Array} bytes 
+ * @returns Int16Array
+ */
+export function bytesToI16(bytes) {
+  const shorts = new Int16Array(bytes.length / 2);
+  for (let i = 0; i < bytes.length; i += 2) {
+    shorts[i / 2] = ((bytes[i] << 8) | bytes[i + 1]); //  - 32768;
+  }
+  return shorts;
+}

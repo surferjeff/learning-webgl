@@ -37,7 +37,7 @@ void main() {
 
 `;
  
-const dstWidth = 6;
+const dstWidth = 3;
 const dstHeight = 1;
  
 const canvas = document.createElement('canvas');
@@ -79,25 +79,13 @@ gl.vertexAttribPointer(
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
-const texPrimes = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
-    new Uint8Array([
-        1, 2, 3, 5,
-        7, 11, 13, 17,
-        19, 23, 29, 31,
-        37, 41, 43, 47,
-        53, 59, 61, 67,
-        71, 73, 79, 241,
-    ]));
+const texPrimes = util.linearDataTextureFromI16(gl, [
+        1, 2, 3, 5, 7, 11
+]);
  
-const texHundreds = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
-    new Uint8Array([
-        100, 100, 100, 100,
-        100, 100, 100, 100,
-        100, 100, 100, 100,
-        100, 100, 100, 100,
-        100, 100, 100, 100,
-        100, 100, 100, 100,
-    ]));
+const texHundreds = util.linearDataTextureFromI16(gl, [
+        100, 200, 300, 400, 500, 600,
+]);
     
 
 gl.useProgram(program);
