@@ -16,7 +16,7 @@ in vec2 texCoords;
 out vec2 textureCoords;
 void main() {
   gl_Position = vec4(position, 0.0, 1.0);
-  textureCoords = texCoords;
+  textureCoords = position; // texCoords;
 }
 `;
 let fragmentShader = `#version 300 es
@@ -26,6 +26,7 @@ uniform sampler2D uImage;
 out vec4 color;
 void main() {
   color = texture(uImage, textureCoords);
+  // color = vec4(0.0, 1.0, 0.0, 1.0);
 }
 `;
 
