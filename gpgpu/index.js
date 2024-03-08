@@ -13,14 +13,13 @@ void main() {
 const fs = `#version 300 es
 precision highp float;
  
-uniform sampler2D srcTex;
+uniform sampler2D srcTex, plusTex;
 uniform vec2 srcDimensions;
 out vec4 color;
  
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
-  vec4 value = texture(srcTex, texcoord);
-  color = value * 2.0;
+  color = texture(srcTex, texcoord) + texture(plusTex, texcoord);
 }
 `;
  
@@ -36,6 +35,7 @@ const gl = canvas.getContext('webgl2');
 const program =  util.getProgram(gl, vs, fs);
 const positionLoc = gl.getAttribLocation(program, 'position');
 const srcTexLoc = gl.getUniformLocation(program, 'srcTex');
+const plusTexLoc = gl.getUniformLocation(program, 'plusTex');
 const srcDimensionsLoc = gl.getUniformLocation(program, 'srcDimensions');
  
 // setup a full canvas clip space quad
@@ -65,7 +65,7 @@ gl.vertexAttribPointer(
 // create our source texture
 const srcWidth = dstWidth;
 const srcHeight = dstHeight;
-util.createDataTextureRGBA(gl, srcWidth, srcHeight,
+const texPrimes = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
     new Uint8Array([
         1, 2, 3, 5,
         7, 11, 13, 17,
@@ -75,10 +75,28 @@ util.createDataTextureRGBA(gl, srcWidth, srcHeight,
         71, 73, 79, 83,
     ]));
  
+const texHundreds = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
+    new Uint8Array([
+        100, 100, 100, 100,
+        100, 100, 100, 100,
+        100, 100, 100, 100,
+        100, 100, 100, 100,
+        100, 100, 100, 100,
+        100, 100, 100, 100,
+    ]));
+    
+
 gl.useProgram(program);
 gl.uniform1i(srcTexLoc, 0);  // tell the shader the src texture is on texture unit 0
+gl.uniform1i(plusTexLoc, 1);  // tell the shader the plus texture is on texture unit 1
 gl.uniform2f(srcDimensionsLoc, srcWidth, srcHeight);
- 
+
+gl.activeTexture(gl.TEXTURE0 + 0);
+gl.bindTexture(gl.TEXTURE_2D, texPrimes);
+gl.activeTexture(gl.TEXTURE0 + 1);
+gl.bindTexture(gl.TEXTURE_2D, texHundreds);
+
+
 gl.drawArrays(gl.TRIANGLES, 0, 6);  // draw 2 triangles (6 vertices)
  
 // get the result
