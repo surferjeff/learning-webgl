@@ -29,11 +29,20 @@ vec2 add16(vec2 a, vec2 b) {
     return result;
 }
 
+vec2 sub16(vec2 a, vec2 b) {
+    vec2 result = a - b;
+    if (result.y < 0.0) {
+        result.x -= carry;
+        result.y += uncarry;
+    }
+    return result;
+}
+
 void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
   vec4 srcVec = texture(srcTex, texcoord);
   vec4 plusVec = texture(plusTex, texcoord);
-  color = vec4(add16(srcVec.rg, plusVec.rg), add16(srcVec.ba, plusVec.ba));
+  color = vec4(sub16(srcVec.rg, plusVec.rg), sub16(srcVec.ba, plusVec.ba));
 }
 
 `;
@@ -94,9 +103,9 @@ gl.uniform1i(srcTexLoc, 0);  // tell the shader the src texture is on texture un
 gl.uniform1i(plusTexLoc, 1);  // tell the shader the plus texture is on texture unit 1
 gl.uniform2f(srcDimensionsLoc, srcWidth, srcHeight);
 
-gl.activeTexture(gl.TEXTURE0 + 0);
-gl.bindTexture(gl.TEXTURE_2D, texPrimes);
 gl.activeTexture(gl.TEXTURE0 + 1);
+gl.bindTexture(gl.TEXTURE_2D, texPrimes);
+gl.activeTexture(gl.TEXTURE0 + 0);
 gl.bindTexture(gl.TEXTURE_2D, texHundreds);
 
 
