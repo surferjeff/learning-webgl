@@ -69,10 +69,10 @@ export function createAndBindBuffer(gl, bufferKind, data, usage) {
  * @param {WebGLBuffer} buffer
  * @returns {number}
  */
-export function linkVariable(gl, program, gpuVariable, buffer) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+export function linkBuffer(gl, program, gpuVariable, buffer) {
   const v = gl.getAttribLocation(program, gpuVariable)
   gl.enableVertexAttribArray(gpuVariable)
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
   return v
 }
 
