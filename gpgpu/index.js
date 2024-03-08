@@ -21,7 +21,13 @@ void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
   vec4 srcVec = texture(srcTex, texcoord);
   vec4 plusVec = texture(plusTex, texcoord);
-  color = vec4(srcVec.r + 0.5, srcVec.g, srcVec.b + 0.5, srcVec.a);
+  float highsum = srcVec.r + plusVec.r;
+  float lowsum = srcVec.g + plusVec.g;
+  if (lowsum > 1.0) {
+    highsum += 1.0;
+    lowsum -= 1.0;
+  }
+  color = vec4(highsum, lowsum, srcVec.b + plusVec.b, srcVec.a + plusVec.a);
 }
 `;
  
