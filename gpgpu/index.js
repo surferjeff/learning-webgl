@@ -24,8 +24,8 @@ void main() {
 }
 `;
  
-const dstWidth = 3;
-const dstHeight = 2;
+const dstWidth = 6;
+const dstHeight = 1;
  
 const canvas = document.createElement('canvas');
 canvas.width = dstWidth;
@@ -63,8 +63,8 @@ gl.vertexAttribPointer(
 );
  
 // create our source texture
-const srcWidth = 3;
-const srcHeight = 2;
+const srcWidth = dstWidth;
+const srcHeight = dstHeight;
 const tex = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, tex);
 gl.texImage2D(
