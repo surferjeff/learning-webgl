@@ -15,8 +15,8 @@ in vec2 position;
 in vec2 texCoords;
 out vec2 textureCoords;
 void main() {
-  gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
-  textureCoords = position; // texCoords;
+  gl_Position = vec4(position, 0.0, 1.0);
+  textureCoords = texCoords;
 }
 `;
 let fragmentShader = `#version 300 es
@@ -26,7 +26,6 @@ uniform sampler2D uImage;
 out vec4 color;
 void main() {
   color = texture(uImage, textureCoords);
-  // color = vec4(0.0, 1.0, 0.0, 1.0);
 }
 `;
 
@@ -35,12 +34,14 @@ let program = util.getProgram(gl, vertexShader, fragmentShader);
 
 // Step 3: Create buffers
 let vertices = util.triangleCoordsFromRect(-1, -1, 1, 1);
-let textCoords = util.triangleCoordsFromRect(0, 0, 1, 1);
+let texCoords = util.triangleCoordsFromRect(0, 0, 1, 1);
+console.log('vertices:', vertices);
+console.log('texCoords:', texCoords);
 
 let buffer = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
     new Float32Array(vertices), gl.STATIC_DRAW);
 let texBuffer  = util.createAndBindBuffer(gl, gl.ARRAY_BUFFER,
-    new Float32Array(textCoords), gl.STATIC_DRAW);
+    new Float32Array(texCoords), gl.STATIC_DRAW);
 
 let image = new Image();
 image.src = '../chicken.jpg';
