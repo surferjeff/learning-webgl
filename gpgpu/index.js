@@ -21,13 +21,13 @@ void main() {
   vec2 texcoord = gl_FragCoord.xy / srcDimensions;
   vec4 srcVec = texture(srcTex, texcoord);
   vec4 plusVec = texture(plusTex, texcoord);
-  float highsum = srcVec.r + plusVec.r;
-  float lowsum = srcVec.g + plusVec.g;
+  float highsum = srcVec.b + plusVec.b;
+  float lowsum = srcVec.a + plusVec.a;
   if (lowsum > 1.0) {
-    highsum += 1.0;
+    highsum += (1.0/256.0);
     lowsum -= 1.0;
   }
-  color = vec4(highsum, lowsum, srcVec.b + plusVec.b, srcVec.a + plusVec.a);
+  color = vec4(srcVec.r + plusVec.r, srcVec.g + plusVec.g, highsum, lowsum);
 }
 `;
  
@@ -80,7 +80,7 @@ const texPrimes = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
         19, 23, 29, 31,
         37, 41, 43, 47,
         53, 59, 61, 67,
-        71, 73, 79, 83,
+        71, 73, 79, 241,
     ]));
  
 const texHundreds = util.createDataTextureRGBA(gl, srcWidth, srcHeight,
